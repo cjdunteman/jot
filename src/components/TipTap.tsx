@@ -1,4 +1,6 @@
-import React from 'react';
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+
 import * as Tb from '@radix-ui/react-toolbar';
 import {
   StrikethroughIcon,
@@ -10,15 +12,26 @@ import {
 } from '@radix-ui/react-icons';
 import './Toolbar.css';
 
-function alignText(param: string) {
-  // e.preventDefault();
-  document.getElementById('text').style.textAlign = param;
-}
+const Toolbar = ({ editor }) => {
+  if (!editor) {
+    return null
+  }
 
-const Toolbar = () => (
-  <Tb.Root className="ToolbarRoot" aria-label="Formatting options">
+  return (
+    <Tb.Root className="ToolbarRoot" aria-label="Formatting options">
     <Tb.ToggleGroup type="multiple" aria-label="Text formatting">
-      <Tb.ToggleItem className="ToolbarToggleItem" value="bold" aria-label="Bold">
+      <Tb.ToggleItem 
+        onClick={() => editor.chain().focus().toggleBold().run()}
+        disabled={
+          !editor.can()
+            .chain()
+            .focus()
+            .toggleBold()
+            .run()
+        }
+        className={editor.isActive('bold') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
+        value="bold" 
+        aria-label="Bold">
         <FontBoldIcon />
       </Tb.ToggleItem>
       <Tb.ToggleItem className="ToolbarToggleItem" value="italic" aria-label="Italic">
@@ -34,7 +47,18 @@ const Toolbar = () => (
     </Tb.ToggleGroup>
     <Tb.Separator className="ToolbarSeparator" />
     <Tb.ToggleGroup type="single" defaultValue="center" aria-label="Text alignment">
-      <Tb.ToggleItem className="ToolbarToggleItem" value="left" onClick={() => alignText('left')} aria-label="Left aligned">
+      <Tb.ToggleItem 
+        value="left"
+        aria-label="Left aligned"
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+          disabled={
+          !editor.can()
+            .chain()
+            .focus()
+            .toggleItalic()
+            .run()
+          }
+        className={editor.isActive('italic') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}>
         <TextAlignLeftIcon />
       </Tb.ToggleItem>
       <Tb.ToggleItem className="ToolbarToggleItem" value="center" onClick={() => alignText('center')} aria-label="Center aligned">
@@ -52,6 +76,23 @@ const Toolbar = () => (
       Share
     </Tb.Button>
   </Tb.Root>
-);
+  )
+}
 
-export default Toolbar;
+const Tiptap = () => {
+    const editor = useEditor({
+      extensions: [
+        StarterKit,
+      ],
+      content: '<p>Hello World!</p>',
+    })
+  
+    return (
+      <div>
+      <Toolbar editor={editor} />
+      <EditorContent editor={editor} />
+    </div>
+    )
+  }
+  
+  export default Tiptap
