@@ -1,6 +1,21 @@
-import { useEditor, EditorContent } from '@tiptap/react'
+import { useEditor, EditorContent, ReactNodeViewRenderer } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
+
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import css from 'highlight.js/lib/languages/css'
+import js from 'highlight.js/lib/languages/javascript'
+import ts from 'highlight.js/lib/languages/typescript'
+import html from 'highlight.js/lib/languages/xml'
+// load all highlight.js languages
+import { lowlight } from 'lowlight'
+
+// import CodeBlockComponent from './CodeBlockComponent'
+
+lowlight.registerLanguage('html', html)
+lowlight.registerLanguage('css', css)
+lowlight.registerLanguage('js', js)
+lowlight.registerLanguage('ts', ts)
 
 import ProfilePic from './ProfilePic';
 
@@ -13,7 +28,7 @@ import {
   FontBoldIcon,
   FontItalicIcon,
 } from '@radix-ui/react-icons';
-import './TipTap.css';
+import './TipTap.scss';
 
 const Toolbar = ({ editor } : { editor: any}) => {
   if (!editor) {
@@ -89,6 +104,9 @@ const Toolbar = ({ editor } : { editor: any}) => {
       </Tb.ToggleItem>
     </Tb.ToggleGroup>
     <Tb.Separator className="ToolbarSeparator" />
+    <button onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={editor.isActive('codeBlock') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}>
+      Code
+    </button>
     <Tb.Button className="ToolbarButton" style={{ marginLeft: 'auto' }}>
       Share
     </Tb.Button>
@@ -99,16 +117,37 @@ const Toolbar = ({ editor } : { editor: any}) => {
 export default () => {
     const editor = useEditor({
       // https://www.angularfix.com/2022/03/use-localstoragegetitem-with-typescript.html
-      content: JSON.parse(localStorage.getItem('content') || '<p>Hello World!</p>'),
+      content: JSON.parse(localStorage.getItem('content') ||
+        `{
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hello World!"
+                }
+              ]
+            }
+          ]
+        }`),
       extensions: [
         StarterKit.configure({
           history: {
             depth: 10,
-          }
+          },
         }),
         TextAlign.configure({
-          types: ['heading', 'paragraph'],
+          types: ['heading', 'paragraph']
         }),
+        CodeBlockLowlight
+        // .extend({
+        //   addNodeView() {
+        //     return ReactNodeViewRenderer(CodeBlockComponent)
+        //   },
+        // })
+        .configure({ lowlight }),
       ],
 
       // triggered on every change
