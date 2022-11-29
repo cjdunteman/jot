@@ -31,7 +31,6 @@ lowlight.registerLanguage('ts', ts)
 
 import ProfilePic from './ProfilePic';
 
-import * as Tb from '@radix-ui/react-toolbar';
 import {
   StrikethroughIcon,
   TextAlignLeftIcon,
@@ -55,8 +54,8 @@ const Toolbar = ({ editor } : { editor: any}) => {
   }
 
   return (
-    <Tb.Root className="ToolbarRoot" aria-label="Formatting options">
-    <Tb.ToggleGroup type="multiple" aria-label="Text formatting">
+    <div className="ToolbarRoot" aria-label="Formatting options">
+      <div className="ToolbarGroup">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={
@@ -100,9 +99,9 @@ const Toolbar = ({ editor } : { editor: any}) => {
       >
         <StrikethroughIcon />
       </button>
-    </Tb.ToggleGroup>
-    <Tb.Separator className="ToolbarSeparator" />
-    <Tb.ToggleGroup type="single" defaultValue="center" aria-label="Text alignment">
+    </div>
+    <div className="ToolbarSeparator" />
+    <div defaultValue="center" aria-label="Text alignment">
       <button 
         value="left"
         aria-label="Left aligned"
@@ -115,28 +114,28 @@ const Toolbar = ({ editor } : { editor: any}) => {
         aria-label="Center aligned">
         <TextAlignCenterIcon />
       </button>
-      <Tb.ToggleItem 
+      <button 
         value="right" 
         onClick={() => editor.chain().focus().setTextAlign('right').run()} className={editor.isActive({ textAlign: 'right' }) ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
         aria-label="Right aligned">
         <TextAlignRightIcon />
-      </Tb.ToggleItem>
-    </Tb.ToggleGroup>
-    <Tb.Separator className="ToolbarSeparator" />
+      </button>
+    </div>
+    <div className="ToolbarSeparator" />
     <button onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={editor.isActive('codeBlock') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}>
       Code
     </button>
-    {/* <BlockPicker onChange={ editor.chain().focus().setColor('#FBBC88').run()}/> */}
     <input
         type="color"
         onInput={(event: React.ChangeEvent<HTMLInputElement>)=> editor.chain().focus().setColor(event.target.value).run()}
         value={editor.getAttributes('textStyle').color}
         className="ToolbarToggleItem"
       />
-    <Tb.Button className="ToolbarButton" style={{ marginLeft: 'auto' }}>
+    <button className="ToolbarButton" style={{ marginLeft: 'auto' }}>
       Share
-    </Tb.Button>
-  </Tb.Root>
+    </button>
+    {/* <ProfilePic/> */}
+  </div>
   )
 }
 
@@ -193,9 +192,6 @@ export default () => {
         // send the content to an API here
         const content = JSON.stringify(json)
         localStorage.setItem('content', content)
-
-        // const wordCount = editor.storage.characterCount.words()
-        // console.log(wordCount)
       }
     })
   

@@ -21,6 +21,8 @@ button {
 
 .ToolbarRoot {
   display: flex;
+  border-bottom: #616161;
+  align-items: center;
 }
 
 .ToolbarToggleItem,
@@ -70,6 +72,9 @@ button {
   width: 1px;
   background-color: var(--mauve6);
   margin: 0 10px;
+  // background-color: black;
+  // height: 100%;
+  height: 2rem;
 }
 
 .ToolbarLink {
