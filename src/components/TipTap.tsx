@@ -1,6 +1,13 @@
+// import React from 'react'
+
 import { useEditor, EditorContent, ReactNodeViewRenderer } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
+
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
+import TextStyle from '@tiptap/extension-text-style'
 
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import css from 'highlight.js/lib/languages/css'
@@ -9,6 +16,10 @@ import ts from 'highlight.js/lib/languages/typescript'
 import html from 'highlight.js/lib/languages/xml'
 // load all highlight.js languages
 import { lowlight } from 'lowlight'
+
+import { Color } from '@tiptap/extension-color'
+import { BlockPicker } from 'react-color';
+import CharacterCount from '@tiptap/extension-character-count'
 
 // import CodeBlockComponent from './CodeBlockComponent'
 
@@ -107,6 +118,14 @@ const Toolbar = ({ editor } : { editor: any}) => {
     <button onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={editor.isActive('codeBlock') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}>
       Code
     </button>
+    {/* <p>{editor.storage.characterCount.words()}</p> */}
+    {/* <BlockPicker onChange={ editor.chain().focus().setColor('#FBBC88').run()}/> */}
+    <input
+        type="color"
+        onInput={(event: React.ChangeEvent<HTMLInputElement>)=> editor.chain().focus().setColor(event.target.value).run()}
+        value={editor.getAttributes('textStyle').color}
+        className="ToolbarToggleItem"
+      />
     <Tb.Button className="ToolbarButton" style={{ marginLeft: 'auto' }}>
       Share
     </Tb.Button>
@@ -133,7 +152,16 @@ export default () => {
           ]
         }`),
       extensions: [
+        Document,
+        Paragraph,
+        Text,
+        TextStyle,
+        Color,
         StarterKit.configure({
+          document: false,
+          paragraph: false,
+          text: false,
+          codeBlock: false,
           history: {
             depth: 10,
           },
@@ -156,6 +184,9 @@ export default () => {
         // send the content to an API here
         const content = JSON.stringify(json)
         localStorage.setItem('content', content)
+
+        // const wordCount = editor.storage.characterCount.getWords()
+        // console.log(wordCount)
       }
     })
   
