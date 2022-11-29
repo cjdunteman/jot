@@ -10,15 +10,3 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-
-body {
-  margin: 10px auto;
-  display: flex;
-  min-width: 320px;
-  min-height: 100vh;
-  max-width: 960px;
-
-  border-radius: 6px;
-  background-color: white;
-  box-shadow: 0 2px 10px var(--blackA7);
-}

@@ -1,5 +1,8 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import TextAlign from '@tiptap/extension-text-align'
+
+import ProfilePic from './ProfilePic';
 
 import * as Tb from '@radix-ui/react-toolbar';
 import {
@@ -10,9 +13,9 @@ import {
   FontBoldIcon,
   FontItalicIcon,
 } from '@radix-ui/react-icons';
-import './Toolbar.css';
+import './TipTap.css';
 
-const Toolbar = ({ editor }) => {
+const Toolbar = ({ editor } : { editor: any}) => {
   if (!editor) {
     return null
   }
@@ -20,7 +23,7 @@ const Toolbar = ({ editor }) => {
   return (
     <Tb.Root className="ToolbarRoot" aria-label="Formatting options">
     <Tb.ToggleGroup type="multiple" aria-label="Text formatting">
-      <Tb.ToggleItem 
+      <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={
           !editor.can()
@@ -33,45 +36,59 @@ const Toolbar = ({ editor }) => {
         value="bold" 
         aria-label="Bold">
         <FontBoldIcon />
-      </Tb.ToggleItem>
-      <Tb.ToggleItem className="ToolbarToggleItem" value="italic" aria-label="Italic">
+      </button>
+      <button 
+         onClick={() => editor.chain().focus().toggleItalic().run()}
+         disabled={
+           !editor.can()
+             .chain()
+             .focus()
+             .toggleItalic()
+             .run()
+         }
+         className={editor.isActive('italic') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
+          value="italic" 
+          aria-label="Italic">
         <FontItalicIcon />
-      </Tb.ToggleItem>
-      <Tb.ToggleItem
-        className="ToolbarToggleItem"
+      </button>
+      <button
+         onClick={() => editor.chain().focus().toggleStrike().run()}
+         disabled={
+           !editor.can()
+             .chain()
+             .focus()
+             .toggleStrike()
+             .run()
+         }
+         className={editor.isActive('strike') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
         value="strikethrough"
         aria-label="Strike through"
       >
         <StrikethroughIcon />
-      </Tb.ToggleItem>
+      </button>
     </Tb.ToggleGroup>
     <Tb.Separator className="ToolbarSeparator" />
     <Tb.ToggleGroup type="single" defaultValue="center" aria-label="Text alignment">
-      <Tb.ToggleItem 
+      <button 
         value="left"
         aria-label="Left aligned"
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-          disabled={
-          !editor.can()
-            .chain()
-            .focus()
-            .toggleItalic()
-            .run()
-          }
-        className={editor.isActive('italic') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}>
-        <TextAlignLeftIcon />
-      </Tb.ToggleItem>
-      <Tb.ToggleItem className="ToolbarToggleItem" value="center" onClick={() => alignText('center')} aria-label="Center aligned">
+        onClick={() => editor.chain().focus().setTextAlign('left').run()} className={editor.isActive({ textAlign: 'left' }) ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}>
+          <TextAlignLeftIcon />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().setTextAlign('center').run()} className={editor.isActive({ textAlign: 'center' }) ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
+        value="center" 
+        aria-label="Center aligned">
         <TextAlignCenterIcon />
-      </Tb.ToggleItem>
-      <Tb.ToggleItem className="ToolbarToggleItem" value="right" onClick={() => alignText('right')} aria-label="Right aligned">
+      </button>
+      <Tb.ToggleItem 
+        value="right" 
+        onClick={() => editor.chain().focus().setTextAlign('right').run()} className={editor.isActive({ textAlign: 'right' }) ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
+        aria-label="Right aligned">
         <TextAlignRightIcon />
       </Tb.ToggleItem>
     </Tb.ToggleGroup>
     <Tb.Separator className="ToolbarSeparator" />
-    <Tb.Link className="ToolbarLink" href="#" target="_blank" style={{ marginRight: 10 }}>
-      Edited 2 hours ago
-    </Tb.Link>
     <Tb.Button className="ToolbarButton" style={{ marginLeft: 'auto' }}>
       Share
     </Tb.Button>
@@ -79,20 +96,34 @@ const Toolbar = ({ editor }) => {
   )
 }
 
-const Tiptap = () => {
+export default () => {
     const editor = useEditor({
+      // https://www.angularfix.com/2022/03/use-localstoragegetitem-with-typescript.html
+      content: JSON.parse(localStorage.getItem('content') || '<p>Hello World!</p>'),
       extensions: [
-        StarterKit,
+        StarterKit.configure({
+          history: {
+            depth: 10,
+          }
+        }),
+        TextAlign.configure({
+          types: ['heading', 'paragraph'],
+        }),
       ],
-      content: '<p>Hello World!</p>',
+
+      // triggered on every change
+      onUpdate: ({ editor }) => {
+        const json = editor.getJSON()
+        // send the content to an API here
+        const content = JSON.stringify(json)
+        localStorage.setItem('content', content)
+      }
     })
   
     return (
-      <div>
+    <div className="container">
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
     </div>
     )
   }
-  
-  export default Tiptap

@@ -6,10 +6,7 @@ import TipTap from './components/TipTap'
 export default function App() {
 
   return (
-    <div className="App container">
-      <div className="header">
-        <ProfilePic />
-      </div>
+    <div className="App">
       <TipTap />
     </div>
   )
