@@ -8,6 +8,7 @@ import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import TextStyle from '@tiptap/extension-text-style'
+import Highlight from '@tiptap/extension-highlight'
 
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import css from 'highlight.js/lib/languages/css'
@@ -40,6 +41,13 @@ import {
   FontItalicIcon,
 } from '@radix-ui/react-icons';
 import './TipTap.scss';
+
+const Footbar = ({ editor } : { editor: any }) => {
+  if (!editor) {
+    return null
+  }
+  return <p className="wordCount">{editor.storage.characterCount.words()} Words</p>
+}
 
 const Toolbar = ({ editor } : { editor: any}) => {
   if (!editor) {
@@ -118,7 +126,6 @@ const Toolbar = ({ editor } : { editor: any}) => {
     <button onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={editor.isActive('codeBlock') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}>
       Code
     </button>
-    {/* <p>{editor.storage.characterCount.words()}</p> */}
     {/* <BlockPicker onChange={ editor.chain().focus().setColor('#FBBC88').run()}/> */}
     <input
         type="color"
@@ -157,6 +164,8 @@ export default () => {
         Text,
         TextStyle,
         Color,
+        CharacterCount,
+        Highlight.configure({ multicolor: true }),
         StarterKit.configure({
           document: false,
           paragraph: false,
@@ -185,7 +194,7 @@ export default () => {
         const content = JSON.stringify(json)
         localStorage.setItem('content', content)
 
-        // const wordCount = editor.storage.characterCount.getWords()
+        // const wordCount = editor.storage.characterCount.words()
         // console.log(wordCount)
       }
     })
@@ -194,6 +203,7 @@ export default () => {
     <div className="container">
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
+      <Footbar editor={editor}/>
     </div>
     )
   }
