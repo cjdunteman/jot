@@ -108,12 +108,9 @@ const Toolbar = ({ editor }) => {
           type="color"
           onInput={(event)=> editor.chain().focus().setColor(event.target.value).run()}
           value={editor.getAttributes('textStyle').color}
-          className="ToolbarToggleItem"
+          className="ToolbarToggleItem colorPicker"
         />
-      {/* {!session ? <Auth /> : <Account key={session.user.id} session={session} />} */}
-      <div className="ToolbarGroup">
           {!session ? <Auth /> : <SignOut/>}
-      </div>
     </div>
     )
   }

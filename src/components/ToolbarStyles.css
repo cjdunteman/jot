@@ -81,3 +81,7 @@ button {
 .ToolbarButton:hover {
   background-color: var(--violet10);
 }
+
+.colorPicker {
+    width: 2rem;
+}
