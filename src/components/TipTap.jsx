@@ -21,6 +21,10 @@ import CharacterCount from '@tiptap/extension-character-count'
 
 // import CodeBlockComponent from './CodeBlockComponent'
 
+import { useState, useEffect } from 'react'
+import { supabase } from '../utils/supabaseClient'
+import Auth from './Auth'
+
 lowlight.registerLanguage('html', html)
 lowlight.registerLanguage('css', css)
 lowlight.registerLanguage('js', js)
@@ -37,17 +41,29 @@ import {
 } from '@radix-ui/react-icons';
 import './TipTap.css';
 
-const Footbar = ({ editor } : { editor: any }) => {
+const Footbar = ({ editor }) => {
   if (!editor) {
     return null
   }
   return <p className="wordCount">{editor.storage.characterCount.words()} Words</p>
 }
 
-const Toolbar = ({ editor } : { editor: any}) => {
+const Toolbar = ({ editor }) => {
   if (!editor) {
     return null
   }
+
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+  }, [])
 
   return (
     <div className="ToolbarRoot" aria-label="Formatting options">
@@ -123,10 +139,11 @@ const Toolbar = ({ editor } : { editor: any}) => {
     </button>
     <input
         type="color"
-        onInput={(event: React.ChangeEvent<HTMLInputElement>)=> editor.chain().focus().setColor(event.target.value).run()}
+        onInput={(event)=> editor.chain().focus().setColor(event.target.value).run()}
         value={editor.getAttributes('textStyle').color}
         className="ToolbarToggleItem"
       />
+            {!session ? <Auth /> : <Account key={session.user.id} session={session} />}
   </div>
   )
 }
