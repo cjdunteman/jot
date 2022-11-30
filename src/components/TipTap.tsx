@@ -1,5 +1,3 @@
-// import React from 'react'
-
 import { useEditor, EditorContent, ReactNodeViewRenderer } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
@@ -29,8 +27,6 @@ lowlight.registerLanguage('css', css)
 lowlight.registerLanguage('js', js)
 lowlight.registerLanguage('ts', ts)
 
-import ProfilePic from './ProfilePic';
-
 import {
   StrikethroughIcon,
   TextAlignLeftIcon,
@@ -38,6 +34,7 @@ import {
   TextAlignRightIcon,
   FontBoldIcon,
   FontItalicIcon,
+  Cross2Icon,
 } from '@radix-ui/react-icons';
 import './TipTap.scss';
 
@@ -131,10 +128,6 @@ const Toolbar = ({ editor } : { editor: any}) => {
         value={editor.getAttributes('textStyle').color}
         className="ToolbarToggleItem"
       />
-    <button className="ToolbarButton" style={{ marginLeft: 'auto' }}>
-      Share
-    </button>
-    {/* <ProfilePic/> */}
   </div>
   )
 }
