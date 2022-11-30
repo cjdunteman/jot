@@ -24,6 +24,7 @@ import CharacterCount from '@tiptap/extension-character-count'
 import { useState, useEffect } from 'react'
 import { supabase } from '../utils/supabaseClient'
 import Auth from './Auth'
+import SignOut from './SignOut'
 
 lowlight.registerLanguage('html', html)
 lowlight.registerLanguage('css', css)
@@ -143,7 +144,10 @@ const Toolbar = ({ editor }) => {
         value={editor.getAttributes('textStyle').color}
         className="ToolbarToggleItem"
       />
-            {!session ? <Auth /> : <Account key={session.user.id} session={session} />}
+    {/* {!session ? <Auth /> : <Account key={session.user.id} session={session} />} */}
+    <div className="ToolbarGroup">
+        {!session ? <Auth /> : <SignOut/>}
+    </div>
   </div>
   )
 }
