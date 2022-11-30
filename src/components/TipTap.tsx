@@ -17,7 +17,6 @@ import html from 'highlight.js/lib/languages/xml'
 import { lowlight } from 'lowlight'
 
 import { Color } from '@tiptap/extension-color'
-import { BlockPicker } from 'react-color';
 import CharacterCount from '@tiptap/extension-character-count'
 
 // import CodeBlockComponent from './CodeBlockComponent'
@@ -36,7 +35,7 @@ import {
   FontItalicIcon,
   Cross2Icon,
 } from '@radix-ui/react-icons';
-import './TipTap.scss';
+import './TipTap.css';
 
 const Footbar = ({ editor } : { editor: any }) => {
   if (!editor) {
