@@ -18,6 +18,7 @@ import { lowlight } from 'lowlight'
 
 import { Color } from '@tiptap/extension-color'
 import CharacterCount from '@tiptap/extension-character-count'
+import FontFamily from '@tiptap/extension-font-family'
 
 import Toolbar from './Toolbar'
 
@@ -62,6 +63,7 @@ export default () => {
         TextStyle,
         Color,
         CharacterCount,
+        FontFamily,
         Highlight.configure({ multicolor: true }),
         StarterKit.configure({
           document: false,
@@ -94,7 +96,7 @@ export default () => {
     })
   
     return (
-    <div className="container">
+    <div className="container mx-auto p-4 flex flex-col max-w-4xl bg-white border border-sm border-solid shadow-md">
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
       <Footbar editor={editor}/>

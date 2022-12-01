@@ -16,6 +16,27 @@ import {
     FileTextIcon,
   } from '@radix-ui/react-icons';
 
+  import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+
+  import FontSelect from './FontSelect'
+  import Avatar from './Avatar'
+
+  const FileMenu = () => {
+    return (
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger className="ToolbarToggleItem">File</DropdownMenu.Trigger>
+
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content className="DropdownMenuContent" sideOffset={5}>
+            <DropdownMenu.Item className="DropdownMenuItem">Open</DropdownMenu.Item>
+            <DropdownMenu.Item className="DropdownMenuItem">Export</DropdownMenu.Item>
+            <DropdownMenu.Arrow className="DropdownMenuArrow" />
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+      )
+  }
+
 const Toolbar = ({ editor }) => {
     const [session, setSession] = useState(null)
   
@@ -36,51 +57,52 @@ const Toolbar = ({ editor }) => {
     return (
       <div className="ToolbarRoot" aria-label="Formatting options">
         <div style={{ display: "flex"}}>
-        <div className="">
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={
-            !editor.can()
-              .chain()
-              .focus()
-              .toggleBold()
-              .run()
-          }
-          className={editor.isActive('bold') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
-          value="bold" 
-          aria-label="Bold">
-          <FontBoldIcon />
-        </button>
-        <button 
-           onClick={() => editor.chain().focus().toggleItalic().run()}
-           disabled={
-             !editor.can()
-               .chain()
-               .focus()
-               .toggleItalic()
-               .run()
-           }
-           className={editor.isActive('italic') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
-            value="italic" 
-            aria-label="Italic">
-          <FontItalicIcon />
-        </button>
-        <button
-           onClick={() => editor.chain().focus().toggleStrike().run()}
-           disabled={
-             !editor.can()
-               .chain()
-               .focus()
-               .toggleStrike()
-               .run()
-           }
-           className={editor.isActive('strike') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
-          value="strikethrough"
-          aria-label="Strike through"
-        >
-          <StrikethroughIcon />
-        </button>
-      </div>
+          <div className="">
+            <FileMenu />
+            <button
+              onClick={() => editor.chain().focus().toggleBold().run()}
+              disabled={
+                !editor.can()
+                  .chain()
+                  .focus()
+                  .toggleBold()
+                  .run()
+              }
+              className={editor.isActive('bold') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
+              value="bold" 
+              aria-label="Bold">
+              <FontBoldIcon />
+            </button>
+            <button 
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+              disabled={
+                !editor.can()
+                  .chain()
+                  .focus()
+                  .toggleItalic()
+                  .run()
+              }
+              className={editor.isActive('italic') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
+                value="italic" 
+                aria-label="Italic">
+              <FontItalicIcon />
+            </button>
+            <button
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+              disabled={
+                !editor.can()
+                  .chain()
+                  .focus()
+                  .toggleStrike()
+                  .run()
+              }
+              className={editor.isActive('strike') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}
+              value="strikethrough"
+              aria-label="Strike through"
+            >
+              <StrikethroughIcon />
+            </button>
+          </div>
       <div className="ToolbarSeparator" />
       <div defaultValue="center" aria-label="Text alignment">
         <button 
@@ -109,12 +131,13 @@ const Toolbar = ({ editor }) => {
       <input
           type="color"
           onInput={(event)=> editor.chain().focus().setColor(event.target.value).run()}
-          value={editor.getAttributes('textStyle').color}
+          value={editor.getAttributes('textStyle').color || "#ffffff"}
           className="ToolbarToggleItem colorPicker"
         />
+        <FontSelect editor={ editor }/>
       </div>
       <div>
-          {!session ? <Auth /> : <SignOut/>}
+          {!session ? <Auth /> : <Avatar/>}
           </div>
     </div>
     )
