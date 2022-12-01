@@ -6,8 +6,9 @@ button {
 
 .ToolbarRoot {
   display: flex;
-  border-bottom: #616161;
   align-items: center;
+  justify-content: space-between;
+  padding: 0px 0px 1rem 0px;
 }
 
 .ToolbarToggleItem,

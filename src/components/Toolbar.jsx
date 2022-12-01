@@ -13,6 +13,7 @@ import {
     FontBoldIcon,
     FontItalicIcon,
     Cross2Icon,
+    FileTextIcon,
   } from '@radix-ui/react-icons';
 
 const Toolbar = ({ editor }) => {
@@ -34,7 +35,8 @@ const Toolbar = ({ editor }) => {
   
     return (
       <div className="ToolbarRoot" aria-label="Formatting options">
-        <div className="ToolbarGroup">
+        <div style={{ display: "flex"}}>
+        <div className="">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={
@@ -110,7 +112,10 @@ const Toolbar = ({ editor }) => {
           value={editor.getAttributes('textStyle').color}
           className="ToolbarToggleItem colorPicker"
         />
+      </div>
+      <div>
           {!session ? <Auth /> : <SignOut/>}
+          </div>
     </div>
     )
   }
