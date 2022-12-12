@@ -1,1 +1,0 @@
-self.__RSC_CSS_MANIFEST={"__entry_css__":{"/home/cjdunteman/repos/jot/app/page":["/home/cjdunteman/repos/jot/components/TipTap.css"]},"/home/cjdunteman/repos/jot/app/page.tsx":["/home/cjdunteman/repos/jot/components/TipTap.css"]}

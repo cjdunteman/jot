@@ -25,3 +25,6 @@ dist-ssr
 
 # secrets
 .env
+
+# Next.js build output
+.next
