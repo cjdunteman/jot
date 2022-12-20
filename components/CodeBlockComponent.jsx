@@ -1,4 +1,4 @@
-import './CodeBlockComponent.scss'
+import './CodeBlockComponent.css'
 
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react'
 import React from 'react'

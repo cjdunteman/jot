@@ -1,6 +1,5 @@
 'use client'
 
-import { FC } from 'react'
 import { Editor } from '@tiptap/react';
 
 import {
@@ -51,7 +50,7 @@ import {
     )
   }
 
-const Toolbar: FC<{ editor: Editor | null}> = ({ editor }) => {
+const Toolbar = ({ editor }) => {
     if (!editor) {
       return null
     }

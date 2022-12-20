@@ -1,5 +1,7 @@
+'use client'
+
 import { useEditor, EditorContent, ReactNodeViewRenderer } from '@tiptap/react'
-import { Editor } from '@tiptap/react';
+// import { Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
 
@@ -23,7 +25,7 @@ import FontFamily from '@tiptap/extension-font-family'
 
 import Toolbar from './toolbar/Toolbar'
 
-// import CodeBlockComponent from './CodeBlockComponent'
+import CodeBlockComponent from './CodeBlockComponent'
 
 lowlight.registerLanguage('html', html)
 lowlight.registerLanguage('css', css)
@@ -33,7 +35,7 @@ lowlight.registerLanguage('ts', ts)
 import './TipTap.css';
 import { FC } from 'react'
 
-const Footbar: FC<{ editor: Editor | null}> = ({ editor }) => {
+const Footbar = ({ editor }) => {
   if (!editor) {
     return null
   }
@@ -43,7 +45,7 @@ const Footbar: FC<{ editor: Editor | null}> = ({ editor }) => {
 const TipTap = () => {
     const editor = useEditor({
       // https://www.angularfix.com/2022/03/use-localstoragegetitem-with-typescript.html
-      content: JSON.parse(localStorage.getItem('content') ||
+      content: JSON.parse(
         `{
           "type": "doc",
           "content": [
@@ -80,11 +82,11 @@ const TipTap = () => {
           types: ['heading', 'paragraph']
         }),
         CodeBlockLowlight
-        // .extend({
-        //   addNodeView() {
-        //     return ReactNodeViewRenderer(CodeBlockComponent)
-        //   },
-        // })
+        .extend({
+          addNodeView() {
+            return ReactNodeViewRenderer(CodeBlockComponent)
+          },
+        })
         .configure({ lowlight }),
       ],
 
@@ -93,7 +95,6 @@ const TipTap = () => {
         const json = editor.getJSON()
         // send the content to an API here
         const content = JSON.stringify(json)
-        localStorage.setItem('content', content)
       }
     })
   

@@ -3,9 +3,8 @@ import TipTap from "../components/TipTap";
 
 export default function Page() {
     return (
-            // <TipTap />
-            <div>hello
-                {/* <TipTap /> */}
+            <div>
+                <TipTap />
             </div>
     )
 }
