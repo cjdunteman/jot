@@ -1,7 +1,7 @@
 'use client'
 
 import { useEditor, EditorContent, ReactNodeViewRenderer } from '@tiptap/react'
-import { Editor } from '@tiptap/react';
+import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
 
@@ -10,14 +10,14 @@ import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import TextStyle from '@tiptap/extension-text-style'
 import Highlight from '@tiptap/extension-highlight'
-
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+
 import css from 'highlight.js/lib/languages/css'
 import js from 'highlight.js/lib/languages/javascript'
 import ts from 'highlight.js/lib/languages/typescript'
 import html from 'highlight.js/lib/languages/xml'
 // load all highlight.js languages
-import { lowlight } from 'lowlight'
+import { all, createLowlight } from 'lowlight'
 
 import { Color } from '@tiptap/extension-color'
 import CharacterCount from '@tiptap/extension-character-count'
@@ -27,12 +27,15 @@ import Toolbar from './toolbar/Toolbar'
 
 // import CodeBlockComponent from './CodeBlockComponent'
 
-lowlight.registerLanguage('html', html)
-lowlight.registerLanguage('css', css)
-lowlight.registerLanguage('js', js)
-lowlight.registerLanguage('ts', ts)
+// create a lowlight instance with all languages loaded
+const lowlight = createLowlight(all)
 
-import './TipTap.css';
+lowlight.register('html', html)
+lowlight.register('css', css)
+lowlight.register('js', js)
+lowlight.register('ts', ts)
+
+// import './TipTap.css';
 import { FC, useEffect } from 'react'
 
 const Footbar: FC<{ editor: Editor | null}> = ({ editor }) => {
@@ -59,6 +62,7 @@ const TipTap = () => {
         ]
       },
       immediatelyRender: false,
+      // bind Tiptap to the `.element`
       extensions: [
         Document,
         Paragraph,
@@ -88,6 +92,8 @@ const TipTap = () => {
         // })
         .configure({ lowlight }),
       ],
+        // prevent loading the default CSS (which isn't much anyway)
+      injectCSS: false,
 
       // triggered on every change
       onUpdate: ({ editor }) => {
@@ -110,10 +116,13 @@ const TipTap = () => {
     }, [editor])
 
     return (
-    <div className="container mx-auto p-4 flex flex-col max-w-4xl bg-white border border-sm border-solid shadow-md">
+    // <div className="container mx-auto p-4 flex flex-col max-w-4xl bg-white border border-sm border-solid shadow-md">
+    <div>   
       <Toolbar editor={editor} />
-      <EditorContent editor={editor} />
-      <Footbar editor={editor}/>
+      <div>
+        <EditorContent editor={editor} />
+        <Footbar editor={editor}/>
+      </div>
     </div>
     )
 }

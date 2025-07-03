@@ -4,49 +4,47 @@ import { FC } from 'react'
 import { Editor } from '@tiptap/react';
 
 import {
+  ArchiveBoxXMarkIcon,
+  ChevronDownIcon,
+  PencilIcon,
+  Square2StackIcon,
+  TrashIcon,
+} from '@heroicons/react/16/solid'
+
+import {
     StrikethroughIcon,
     TextAlignLeftIcon,
     TextAlignCenterIcon,
     TextAlignRightIcon,
     FontBoldIcon,
     FontItalicIcon,
-    Cross2Icon,
-    FileTextIcon,
   } from '@radix-ui/react-icons';
 
   import FontSelect from './FontSelect'
 
-  import { Menu } from '@headlessui/react'
+  import { Menu, MenuItem, MenuItems, MenuButton } from '@headlessui/react'
 
   function FileMenu() {
     return (
       <Menu>
-        <Menu.Button>More</Menu.Button>
-        <Menu.Items>
-          <Menu.Item>
-            {({ active }) => (
-              <a
-                className={`${active && 'bg-blue-500'}`}
-                href="/account-settings"
-              >
-                Account settings
-              </a>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <a
-                className={`${active && 'bg-blue-500'}`}
-                href="/account-settings"
-              >
-                Documentation
-              </a>
-            )}
-          </Menu.Item>
-          <Menu.Item disabled>
-            <span className="opacity-75">Invite a friend (coming soon!)</span>
-          </Menu.Item>
-        </Menu.Items>
+        <MenuButton>File</MenuButton>
+        <MenuItems transition anchor="bottom" className="origin-top-right mt-2 w-40 rounded-md bg-white shadow-lg flex flex-col py-1 z-50">
+          <MenuItem>
+            <button>
+              Save
+            </button>
+          </MenuItem>
+          <MenuItem>
+            <button>
+              Save As
+            </button>
+          </MenuItem>
+          <MenuItem>
+            <button>
+              Export
+            </button>
+          </MenuItem>
+        </MenuItems>
       </Menu>
     )
   }
@@ -59,8 +57,7 @@ const Toolbar: FC<{ editor: Editor | null}> = ({ editor }) => {
     return (
       <div className="ToolbarRoot" aria-label="Formatting options">
         <div style={{ display: "flex"}}>
-          <div className="">
-            <FileMenu />
+          <div className="flex flex-row">
             <button
               onClick={() => editor.chain().focus().toggleBold().run()}
               disabled={
@@ -130,10 +127,9 @@ const Toolbar: FC<{ editor: Editor | null}> = ({ editor }) => {
       <button onClick={() => editor.chain().focus().toggleCodeBlock().run()} className={editor.isActive('codeBlock') ? 'is-active ToolbarToggleItem' : 'ToolbarToggleItem'}>
         Code
       </button>
-        <FontSelect editor={ editor }/>
+      <FontSelect editor={ editor }/>
+      <FileMenu />
       </div>
-      <div>
-          </div>
     </div>
     )
   }

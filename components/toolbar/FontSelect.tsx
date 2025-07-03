@@ -67,7 +67,7 @@
 // export default FontSelect;
 
 import { FC, useState } from 'react'
-import { Listbox } from '@headlessui/react'
+import { Listbox, ListboxOptions, ListboxOption, ListboxButton } from '@headlessui/react'
 import { Editor } from '@tiptap/react'
 
 const people = [
@@ -83,18 +83,18 @@ const FontSelect: FC<{ editor: Editor | null}> = ({ editor }) => {
 
   return (
     <Listbox value={selectedPerson} onChange={setSelectedPerson}>
-      <Listbox.Button>{selectedPerson.name}</Listbox.Button>
-      <Listbox.Options>
+      <ListboxButton>{selectedPerson.name}</ListboxButton>
+      <ListboxOptions>
         {people.map((person) => (
-          <Listbox.Option
+          <ListboxOption
             key={person.id}
             value={person}
             disabled={person.unavailable}
           >
             {person.name}
-          </Listbox.Option>
+          </ListboxOption>
         ))}
-      </Listbox.Options>
+      </ListboxOptions>
     </Listbox>
   )
 }
