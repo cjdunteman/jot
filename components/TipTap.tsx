@@ -1,3 +1,5 @@
+'use client'
+
 import { useEditor, EditorContent, ReactNodeViewRenderer } from '@tiptap/react'
 import { Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit'
@@ -31,7 +33,7 @@ lowlight.registerLanguage('js', js)
 lowlight.registerLanguage('ts', ts)
 
 import './TipTap.css';
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 
 const Footbar: FC<{ editor: Editor | null}> = ({ editor }) => {
   if (!editor) {
@@ -42,22 +44,21 @@ const Footbar: FC<{ editor: Editor | null}> = ({ editor }) => {
 
 const TipTap = () => {
     const editor = useEditor({
-      // https://www.angularfix.com/2022/03/use-localstoragegetitem-with-typescript.html
-      content: JSON.parse(localStorage.getItem('content') ||
-        `{
-          "type": "doc",
-          "content": [
-            {
-              "type": "paragraph",
-              "content": [
-                {
-                  "type": "text",
-                  "text": "Hello World!"
-                }
-              ]
-            }
-          ]
-        }`),
+      content: {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [
+              {
+                type: "text",
+                text: "Hello World!"
+              }
+            ]
+          }
+        ]
+      },
+      immediatelyRender: false,
       extensions: [
         Document,
         Paragraph,
@@ -91,12 +92,23 @@ const TipTap = () => {
       // triggered on every change
       onUpdate: ({ editor }) => {
         const json = editor.getJSON()
-        // send the content to an API here
         const content = JSON.stringify(json)
-        localStorage.setItem('content', content)
+        if (typeof window !== "undefined") {
+          localStorage.setItem('content', content)
+        }
       }
     })
-  
+
+    // Load content from localStorage on client
+    useEffect(() => {
+      if (editor && typeof window !== "undefined") {
+        const saved = localStorage.getItem('content')
+        if (saved) {
+          editor.commands.setContent(JSON.parse(saved))
+        }
+      }
+    }, [editor])
+
     return (
     <div className="container mx-auto p-4 flex flex-col max-w-4xl bg-white border border-sm border-solid shadow-md">
       <Toolbar editor={editor} />
