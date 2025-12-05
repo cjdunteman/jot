@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Listbox, ListboxOptions, ListboxOption, ListboxButton } from '@headlessui/react'
+import { Menu, MenuItem, MenuItems, MenuButton } from '@headlessui/react'
 import { Editor } from '@tiptap/react'
 
 const fonts = [
@@ -14,20 +14,28 @@ const FontSelect: FC<{ editor: Editor | null}> = ({ editor }) => {
   const [selectedFont, setSelectedFont] = useState(fonts[0])
 
   return (
-    <Listbox value={selectedFont} onChange={setSelectedFont}>
-      <ListboxButton>{selectedFont.name}</ListboxButton>
-      <ListboxOptions>
+    <Menu>
+      <MenuButton>
+        {selectedFont.name} ▾
+      </MenuButton>
+
+      <MenuItems anchor="bottom" className="block absolute left-0 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg py-1 z-50">
         {fonts.map((font) => (
-          <ListboxOption
-            key={font.id}
-            value={font}
-            disabled={font.unavailable}
-          >
-            {font.name}
-          </ListboxOption>
+          <MenuItem key={font.id} disabled={font.unavailable}>
+            {({ active, disabled }) => (
+              <button
+                onClick={() => !disabled && setSelectedFont(font)}
+                className={`block w-full text-left px-4 py-2 text-sm ${
+                  active ? 'bg-slate-100' : ''
+                } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+              >
+                {font.name}
+              </button>
+            )}
+          </MenuItem>
         ))}
-      </ListboxOptions>
-    </Listbox>
+      </MenuItems>
+    </Menu>
   )
 }
 

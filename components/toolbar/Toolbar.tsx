@@ -21,33 +21,7 @@ import {
   } from '@radix-ui/react-icons';
 
   import FontSelect from './FontSelect'
-
-  import { Menu, MenuItem, MenuItems, MenuButton } from '@headlessui/react'
-
-  function FileMenu() {
-    return (
-      <Menu>
-        <MenuButton>File</MenuButton>
-        <MenuItems transition anchor="bottom" className="origin-top-right mt-2 w-40 rounded-md bg-white shadow-lg flex flex-col py-1 z-50">
-          <MenuItem>
-            <button>
-              Save
-            </button>
-          </MenuItem>
-          <MenuItem>
-            <button>
-              Save As
-            </button>
-          </MenuItem>
-          <MenuItem>
-            <button>
-              Export
-            </button>
-          </MenuItem>
-        </MenuItems>
-      </Menu>
-    )
-  }
+  import FileMenu from './FileMenu'
 
 const Toolbar: FC<{ editor: Editor | null}> = ({ editor }) => {
     if (!editor) {
